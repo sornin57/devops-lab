@@ -14,6 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check Python syntax
+        run: python -m py_compile app/main.py
+
       - name: Build Docker image
         run: docker build -t devops-lab-app ./app
 
