@@ -1,8 +1,8 @@
 DevOps Lab
 
-Lab personnel de montée en compétence DevOps autour de Docker, CI/CD avec GitHub Actions, Terraform et bases d’automatisation.
+Lab personnel de montée en compétence DevOps autour de Docker, CI/CD avec GitHub Actions et Terraform.
 
-L’objectif est de comprendre la chaîne complète : partir d’une application simple, la conteneuriser, l’automatiser dans une pipeline CI, puis la gérer avec Terraform.
+L’objectif est de comprendre une première chaîne DevOps complète : créer une application simple, la conteneuriser, la tester automatiquement dans une pipeline CI, puis la gérer avec Terraform.
 
 Stack utilisée
 
@@ -10,7 +10,6 @@ Stack utilisée
 * Docker
 * GitHub Actions
 * Terraform
-* Provider Docker pour Terraform
 * Git / GitHub
 
 Structure du projet
@@ -26,11 +25,12 @@ Structure du projet
 │   └── notes.md
 ├── terraform-docker
 │   └── main.tf
+├── .gitignore
 └── README.md
 
 Application Python
 
-L’application est un serveur HTTP simple écrit en Python.
+L’application est un petit serveur HTTP écrit en Python.
 
 Elle écoute sur le port 8000 et retourne :
 
@@ -42,7 +42,7 @@ app/main.py
 
 Docker
 
-Docker est utilisé pour construire une image de l’application et la lancer dans un container.
+Docker permet de construire une image de l’application et de la lancer dans un container.
 
 Construire l’image :
 
@@ -83,10 +83,11 @@ Concepts retenus :
 * Un Dockerfile décrit comment construire l’image.
 * L’option -d lance le container en arrière-plan.
 * L’option -p 8000:8000 relie le port local au port du container.
+* docker logs permet de consulter les logs du container.
 
 CI/CD avec GitHub Actions
 
-GitHub Actions est utilisé pour vérifier automatiquement le projet à chaque push sur main.
+GitHub Actions est utilisé pour vérifier automatiquement le projet à chaque push sur la branche main.
 
 Workflow :
 
@@ -109,17 +110,19 @@ docker run -d -p 8000:8000 --name devops-lab-container devops-lab-app
 curl -f http://localhost:8000
 docker logs devops-lab-container
 
-Objectif :
+Objectif de la pipeline :
 
 * vérifier que le code Python est valide ;
 * vérifier que l’image Docker peut être construite ;
 * vérifier que le container démarre correctement ;
 * vérifier que l’application répond en HTTP ;
-* obtenir une pipeline verte ou rouge automatiquement.
+* obtenir un résultat automatique vert ou rouge à chaque push.
 
 Terraform
 
-Terraform est utilisé pour décrire et gérer une ressource Docker avec du code.
+Terraform permet de décrire et gérer de l’infrastructure avec du code.
+
+Dans ce lab, Terraform utilise le provider Docker pour lancer l’application conteneurisée.
 
 Fichier Terraform :
 
@@ -138,8 +141,6 @@ Rôle des commandes :
 * terraform plan affiche ce que Terraform va créer, modifier ou supprimer.
 * terraform apply applique les changements.
 * terraform destroy supprime les ressources créées par Terraform.
-
-Dans ce lab, Terraform utilise le provider Docker pour lancer l’application conteneurisée.
 
 Après terraform apply, l’application est accessible avec :
 
@@ -179,13 +180,12 @@ Ce projet montre les bases suivantes :
 * première approche d’Infrastructure as Code avec Terraform ;
 * gestion propre des ressources créées par Terraform.
 
-Prochaine étape
+Prochaines étapes
 
-Les prochaines évolutions possibles :
+* Ajouter un badge GitHub Actions dans le README
+* Ajouter des tests Python
+* Pousser l’image Docker vers une registry
+* Déployer l’application sur Kubernetes
+* Créer un chart Helm
+* Ajouter un playbook Ansible
 
-* ajouter un badge GitHub Actions dans le README ;
-* ajouter des tests Python ;
-* pousser l’image vers une registry ;
-* déployer l’application sur Kubernetes ;
-* créer un chart Helm ;
-* ajouter un playbook Ansible.
