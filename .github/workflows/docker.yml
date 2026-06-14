@@ -16,3 +16,15 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t devops-lab-app ./app
+
+      - name: Run Docker container
+        run: docker run -d -p 8000:8000 --name devops-lab-container devops-lab-app
+
+      - name: Test application response
+        run: |
+          sleep 3
+          curl -f http://localhost:8000
+
+      - name: Show container logs
+        if: always()
+        run: docker logs devops-lab-container
